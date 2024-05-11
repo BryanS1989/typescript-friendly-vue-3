@@ -42,7 +42,22 @@ const appInfo : AppInfo = reactive({
   slogan: 'an app you can count on'
 });
 
+/*
+  In this case will be an error, because initialCount is type any.
+
+  type inference can only make its best guess when the callback 
+  function is passed inline to fetchCount. TypeScript knows what 
+  fetchCount accepts as a parameter, so it just “connects the dots.”
+  
+const cb = (initialCount) => {
+  count.value = initialCount
+}
+
+fetchCount(cb)
+*/
+
 onMounted(() => {
+  // Type inference is able to infer the parameter type if the function is used as an inline callback function.
   fetchCount((initialCount) => {
     count.value = initialCount;
   });
