@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed } from "vue";
-import fetchCount from "./fetchCount";
+import { reactive } from "vue";
+import Counter from './components/Counter.vue';
+// import fetchCount from "./fetchCount";
 
 interface AppInfo {
   name: string;
@@ -19,7 +20,7 @@ interface AppInfo {
     then we cant set count initial value as zero...
     then we set type as <number | null> to avoid error
 */
-const count = ref<number | null>(null);
+// const count = ref<number | null>(null);
 
 /*
   In this case, the type could be a number (count.value is a number)
@@ -39,7 +40,7 @@ const nextCount = computed(() => {
 
 const appInfo : AppInfo = reactive({
   name: 'Counter',
-  slogan: 'an app you can count on'
+  slogan: 'An app you can count on'
 });
 
 /*
@@ -48,7 +49,7 @@ const appInfo : AppInfo = reactive({
   type inference can only make its best guess when the callback 
   function is passed inline to fetchCount. TypeScript knows what 
   fetchCount accepts as a parameter, so it just “connects the dots.”
-  
+
 const cb = (initialCount) => {
   count.value = initialCount
 }
@@ -56,18 +57,18 @@ const cb = (initialCount) => {
 fetchCount(cb)
 */
 
-onMounted(() => {
-  // Type inference is able to infer the parameter type if the function is used as an inline callback function.
-  fetchCount((initialCount) => {
-    count.value = initialCount;
-  });
-});
+// onMounted(() => {
+//   // Type inference is able to infer the parameter type if the function is used as an inline callback function.
+//   fetchCount((initialCount) => {
+//     count.value = initialCount;
+//   });
+// });
 
-function addCount (num: number) {
-  if (count.value !== null) {
-    count.value += num;
-  }
-}
+// function addCount (num: number) {
+//   if (count.value !== null) {
+//     count.value += num;
+//   }
+// }
 </script>
 
 <template>
@@ -85,11 +86,14 @@ function addCount (num: number) {
     <h2>{{ appInfo.slogan }}</h2>
   </header>
 
-  <p>{{ count }}</p>
+  <Counter
+    :limit="20"
+    :alert-message-on-limit="'Can not go any higher'"
+  ></Counter>
 
-  <p>
-    <button @click="addCount(1)">Add</button>
-  </p>
+  <Counter
+    :limit="15"
+  ></Counter>
 </template>
 
 <style scoped>
