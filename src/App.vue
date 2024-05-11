@@ -1,17 +1,54 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, reactive, onMounted } from "vue";
+import fetchCount from "./fetchCount";
+
+interface AppInfo {
+  name: string;
+  slogan: string
+}
+
+/*
+  We did not need to set type because of type inference.
+  The type will be inferred by the ref value.
+  In this case inferred type is Ref<number>
+
+    const count = ref(0);
+*/
+/*
+    If we initialize count with null, type inferred is null
+    then we cant set count initial value as zero...
+    then we set type as <number | null> to avoid error
+*/
+const count = ref<number | null>(null);
+
+const appInfo : AppInfo = reactive({
+  name: 'Counter',
+  slogan: 'an app you can count on'
+});
+
+onMounted(() => {
+  fetchCount((initialCount) => {
+    count.value = initialCount;
+  });
+});
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <header>
+    <div>
+      <a href="https://vitejs.dev" target="_blank">
+        <img src="/vite.svg" class="logo" alt="Vite logo" />
+      </a>
+      <a href="https://vuejs.org/" target="_blank">
+        <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
+      </a>
+    </div>
+
+    <h1>{{ appInfo.name }}</h1>
+    <h2>{{ appInfo.slogan }}</h2>
+  </header>
+
+  <p>{{ count }}</p>
 </template>
 
 <style scoped>
