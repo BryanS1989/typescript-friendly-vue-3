@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import fetchCount from "../fetchCount";
-
+import ControlBar from '../components/ControlBar.vue';
 /*
     In order to maker a prop as optional we must use:
     '?' in the prop and withDefaults. withDefault function
@@ -48,8 +48,9 @@ function addCount (num: number) {
 <template>
     <div>
         <p>{{ count }}</p>
-        <p>
-            <button @click="addCount(1)">Add</button>
-        </p>
+        <ControlBar
+            @add-count="addCount"
+            @reset-count="count = 0"
+        ></ControlBar>
     </div>
 </template>
